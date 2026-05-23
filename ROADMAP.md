@@ -30,15 +30,19 @@ Completed:
 
 ## Phase 2 — Web MVP without payment
 
+Status: complete.
+
 Goal: a premium local web experience with live preview and SEO sections, but no payment unlock yet.
 
-Tasks:
+Completed:
 
 - Scaffold Next.js + TypeScript + Tailwind.
 - Build hero and embedded generator.
 - Add style/color/complexity/size controls.
 - Add example grid and use-case sections.
 - Add FAQ, metadata, and feedback form stub.
+- Add Vitest tests for preview logic, landing copy, and rendered MVP controls.
+- Verify with tests, lint, production build, local production server, browser snapshot, and visual inspection.
 
 ## Phase 3 — Export backend
 

@@ -26,14 +26,15 @@
 
 ## Web
 
-- [ ] Scaffold Next.js app.
-- [ ] Build hero section.
-- [ ] Build live generator UI.
-- [ ] Build examples grid.
-- [ ] Build use-case sections.
-- [ ] Build FAQ.
-- [ ] Build feedback form.
-- [ ] Add SEO metadata.
+- [x] Scaffold Next.js app.
+- [x] Build hero section.
+- [x] Build live generator UI.
+- [x] Build examples grid.
+- [x] Build use-case sections.
+- [x] Build FAQ.
+- [x] Build feedback form.
+- [x] Add SEO metadata.
+- [x] Add web tests, lint config, and production build verification.
 
 ## API / exports
 

@@ -10,18 +10,16 @@ VectorGlyphs is an independent web product for generating premium circular vecto
 
 ## Current phase
 
-Phase 1 glyph core is complete:
+Phase 2 web MVP without payment is complete locally:
 
-- original generator copied as in-repo reference
-- standalone `glyph_core` Python package
-- deterministic seed/spec generation
-- clean SVG rendering
-- PNG export helper
-- manifest builder
-- pytest coverage
-- sample gallery under `packages/glyph-core/sample-gallery/phase1`
+- Phase 1 standalone `glyph_core` Python package remains available under `packages/glyph-core/python`
+- Next.js + TypeScript + Tailwind app lives under `apps/web`
+- premium landing page with hero, examples, use cases, exports, license, pricing hypothesis, FAQ, and feedback stub
+- client-side deterministic preview generator with seed/style/complexity/color/background/format/PNG-size controls
+- SEO metadata for `vectorglyphs.com`
+- Vitest component/unit tests, ESLint, and production build verification
 
-No web app, payment integration, deployment, cron jobs, or external publishing have been created yet.
+No payment integration, export backend, deployment, cron jobs, external publishing, paid resources, or account automation have been created yet.
 
 ## Planned stack
 
@@ -36,8 +34,9 @@ No web app, payment integration, deployment, cron jobs, or external publishing h
 ## Repository layout
 
 ```txt
-apps/                  Future web and API apps
-packages/glyph-core/   Future standalone glyph generation package
+apps/web/              Next.js + TypeScript + Tailwind Web MVP
+apps/api/              Future FastAPI export backend
+packages/glyph-core/   Standalone glyph generation package and reference material
 infra/                 Future Docker/Caddy/Cloudflare deployment files
 docs/                  Product, architecture, API, deployment, SEO, launch docs
 scripts/               Future local maintenance/import scripts

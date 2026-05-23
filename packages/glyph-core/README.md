@@ -1,5 +1,7 @@
-# Glyph Core Placeholder
+# Glyph Core
 
-Future standalone Python package for deterministic procedural glyph generation, SVG rendering, manifests, and PNG export helpers.
+Standalone Python package for deterministic procedural glyph generation, SVG rendering, manifests, and PNG export helpers.
 
-Phase 1 will import the original generator as reference and refactor it here with tests.
+Phase 1 imported the original generator as in-repo reference material and refactored the runtime package under `python/glyph_core` with tests.
+
+See `python/README.md` for package commands and API notes.
