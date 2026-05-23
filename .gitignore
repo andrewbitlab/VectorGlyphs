@@ -1,0 +1,56 @@
+# Secrets and local env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.p8
+.secrets/
+
+# macOS / editor
+.DS_Store
+.AppleDouble
+.LSOverride
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+coverage/
+.turbo/
+.vercel/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+*.egg-info/
+
+# Generated assets and local storage
+/data/
+.tmp/
+tmp/
+exports/
+previews/
+marketing/outbox/*
+!marketing/outbox/README.md
+
+# Docker/local runtime
+*.pid
+infra/.env
