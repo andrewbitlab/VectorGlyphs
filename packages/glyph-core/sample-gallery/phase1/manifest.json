@@ -1,0 +1,93 @@
+{
+  "generator": "vectorglyphs-glyph-core",
+  "glyphs": [
+    {
+      "id": "glyph_001",
+      "name": "vertical-dot-core",
+      "svgFile": "glyph_001-vertical-dot-core.svg",
+      "tags": [
+        "premium-ui",
+        "balanced"
+      ],
+      "template": "vertical-dot-core",
+      "transparentBackground": true,
+      "viewBox": "0 0 48 48"
+    },
+    {
+      "id": "glyph_002",
+      "name": "inner-pulse-core",
+      "svgFile": "glyph_002-inner-pulse-core.svg",
+      "tags": [
+        "premium-ui",
+        "balanced"
+      ],
+      "template": "inner-pulse-core",
+      "transparentBackground": true,
+      "viewBox": "0 0 48 48"
+    },
+    {
+      "id": "glyph_003",
+      "name": "horizontal-dot-core",
+      "svgFile": "glyph_003-horizontal-dot-core.svg",
+      "tags": [
+        "premium-ui",
+        "balanced"
+      ],
+      "template": "horizontal-dot-core",
+      "transparentBackground": true,
+      "viewBox": "0 0 48 48"
+    },
+    {
+      "id": "glyph_004",
+      "name": "large-center-dot",
+      "svgFile": "glyph_004-large-center-dot.svg",
+      "tags": [
+        "premium-ui",
+        "simple"
+      ],
+      "template": "large-center-dot",
+      "transparentBackground": true,
+      "viewBox": "0 0 48 48"
+    },
+    {
+      "id": "glyph_005",
+      "name": "four-inner-dots",
+      "svgFile": "glyph_005-four-inner-dots.svg",
+      "tags": [
+        "premium-ui",
+        "dense"
+      ],
+      "template": "four-inner-dots",
+      "transparentBackground": true,
+      "viewBox": "0 0 48 48"
+    },
+    {
+      "id": "glyph_006",
+      "name": "three-horizontal-bars",
+      "svgFile": "glyph_006-three-horizontal-bars.svg",
+      "tags": [
+        "dashboard",
+        "dense"
+      ],
+      "template": "three-horizontal-bars",
+      "transparentBackground": true,
+      "viewBox": "0 0 48 48"
+    }
+  ],
+  "schemaVersion": 1,
+  "spec": {
+    "background": null,
+    "complexity": "balanced",
+    "count": 6,
+    "motif_families": [],
+    "palette": {
+      "background": null,
+      "stroke": "#9d9788"
+    },
+    "seed": "phase-1-sample",
+    "stroke_width": 2.0,
+    "style": "premium-ui",
+    "view_box": "0 0 48 48"
+  },
+  "specHash": "sha256:ac8195d622205263ee045b6825e3b1fa828bfe39ad26242a122a7963837a4bd9"
+}

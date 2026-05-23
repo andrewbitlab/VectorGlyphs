@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="inner-pulse-core" color="#9d9788">
+  <g id="glyph-glyph_002" data-name="inner-pulse-core" vector-effect="non-scaling-stroke">
+    <circle cx="24" cy="24" r="17.6" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="24" cy="24" r="8.8" fill="none" stroke="currentColor" stroke-width="2.45" stroke-linecap="round" stroke-linejoin="round" opacity="0.74"/>
+    <circle cx="24" cy="24" r="2.55" fill="currentColor" opacity="0.88"/>
+  </g>
+</svg>

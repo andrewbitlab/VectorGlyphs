@@ -10,15 +10,18 @@ VectorGlyphs is an independent web product for generating premium circular vecto
 
 ## Current phase
 
-Phase 0 foundation only:
+Phase 1 glyph core is complete:
 
-- repository structure
-- project/business/deployment/marketing documentation
-- `.env.example`
-- `.gitignore`
-- strict agent boundaries
+- original generator copied as in-repo reference
+- standalone `glyph_core` Python package
+- deterministic seed/spec generation
+- clean SVG rendering
+- PNG export helper
+- manifest builder
+- pytest coverage
+- sample gallery under `packages/glyph-core/sample-gallery/phase1`
 
-No web app, API implementation, payments, deployment, cron jobs, or external publishing have been created yet.
+No web app, payment integration, deployment, cron jobs, or external publishing have been created yet.
 
 ## Planned stack
 

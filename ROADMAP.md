@@ -14,17 +14,19 @@ Scope:
 
 ## Phase 1 — Extract glyph core
 
+Status: complete.
+
 Goal: create a standalone, tested Python glyph generation package.
 
-Tasks:
+Completed:
 
-- Copy the original generator into this repo as reference only after verifying the expected source path.
-- Refactor into `packages/glyph-core/python/glyph_core`.
-- Define generation specs and output models.
-- Add deterministic generation tests.
-- Add SVG validity/security tests.
-- Add sample gallery generation script.
-- Confirm representative glyph snapshots.
+- Copied the original generator into this repo as reference.
+- Refactored generation into `packages/glyph-core/python/glyph_core`.
+- Defined generation specs and output models.
+- Added deterministic generation tests.
+- Added SVG validity/security tests.
+- Added PNG export dimensions test.
+- Generated a Phase 1 sample gallery.
 
 ## Phase 2 — Web MVP without payment
 

@@ -13,16 +13,16 @@
 
 ## Generator
 
-- [ ] Verify source path for original generator candidate.
-- [ ] Import original generator as reference inside this repository.
-- [ ] Refactor generator into `glyph_core`.
-- [ ] Add seed-based generation.
-- [ ] Add palette controls.
-- [ ] Add complexity controls.
-- [ ] Add SVG validation tests.
-- [ ] Add PNG export tests.
-- [ ] Add snapshot tests for representative glyphs.
-- [ ] Generate sample gallery.
+- [x] Verify source path for original generator candidate.
+- [x] Import original generator as reference inside this repository.
+- [x] Refactor generator into `glyph_core`.
+- [x] Add seed-based generation.
+- [x] Add palette controls.
+- [x] Add complexity controls.
+- [x] Add SVG validation tests.
+- [x] Add PNG export tests.
+- [x] Add representative output tests.
+- [x] Generate sample gallery.
 
 ## Web
 

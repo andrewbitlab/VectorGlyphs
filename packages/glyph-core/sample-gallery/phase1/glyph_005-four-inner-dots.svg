@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="four-inner-dots" color="#9d9788">
+  <g id="glyph-glyph_005" data-name="four-inner-dots" vector-effect="non-scaling-stroke">
+    <circle cx="24" cy="24" r="17.6" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="24" cy="11.2" r="2.55" fill="currentColor" opacity="0.9"/>
+    <circle cx="36.8" cy="24" r="2.55" fill="currentColor" opacity="0.9"/>
+    <circle cx="24" cy="36.8" r="2.55" fill="currentColor" opacity="0.9"/>
+    <circle cx="11.2" cy="24" r="2.55" fill="currentColor" opacity="0.9"/>
+  </g>
+</svg>
