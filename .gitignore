@@ -44,6 +44,7 @@ build/
 
 # Generated assets and local storage
 /data/
+/images/
 .tmp/
 tmp/
 exports/

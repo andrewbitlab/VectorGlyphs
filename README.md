@@ -1,12 +1,12 @@
 # VectorGlyphs
 
-VectorGlyphs is an independent web product for generating premium circular vector glyphs and exporting production-ready SVG/PNG assets for apps, UI, dashboards, branding, landing pages, presentations, and digital products.
+VectorGlyphs is an independent web product for creating and selling premium vector glyph packs for apps, UI, dashboards, branding, landing pages, presentations, and digital products.
 
 **Domain:** `vectorglyphs.com`
 
 **Positioning:** Vector Glyph Generator — create SVG & PNG glyphs for apps, UI, logos, and digital products.
 
-**MVP direction:** free previews, deterministic procedural generation, Stripe Checkout for paid exports, tokenized downloads, commercial-use license, and Docker-based deployment through a LAN host exposed by Cloudflare Tunnel.
+**Pivot direction:** sell curated ready-made glyph packs, powered by an internal `vectorizer.app` workflow that extracts monochrome icon sheets into individual high-fidelity SVG files. The earlier procedural generator remains useful for experimentation, review boards, and future pack creation.
 
 ## Current phase
 
@@ -24,7 +24,8 @@ Phase 4.5 premium UX and retention redesign is complete on top of the local/test
 - retention-focused studio experience encourages users to generate variations, build keeper sets, preview glyphs in real UI contexts, and export with confidence
 - browser preview generator now includes a wider set of symmetric glyph structures, including segmented outer rings and filled line systems
 - `/glyph-lab` provides a 50-glyph numbered feedback board for fast visual iteration
-- tests cover payment safety, signature verification, token hashing, paid-only downloads, API generation/export, premium web UI, and glyph core
+- pivot work has started under `packages/vectorizer-core/python`: monochrome icon-sheet segmentation, SVG vectorization, rendered-PNG comparison, diff artifacts, and benchmark contact sheets
+- tests cover payment safety, signature verification, token hashing, paid-only downloads, API generation/export, premium web UI, vectorizer core, and glyph core
 
 No live Stripe keys, deployment, cron jobs, external publishing, paid resources, or account automation have been created. The payment flow rejects live Stripe secret keys and is intended for local/test-mode validation only.
 
@@ -44,10 +45,11 @@ No live Stripe keys, deployment, cron jobs, external publishing, paid resources,
 apps/web/              Next.js + TypeScript + Tailwind Web MVP
 apps/api/              FastAPI local export backend
 packages/glyph-core/   Standalone glyph generation package and reference material
+packages/vectorizer-core/ Monochrome icon-sheet extraction and SVG vectorization engine
 infra/                 Future Docker/Caddy/Cloudflare deployment files
 docs/                  Product, architecture, API, deployment, SEO, launch docs
 scripts/               Future local maintenance/import scripts
 marketing/             Future marketing outbox and performance tracking
 ```
 
-See `VECTORGLYPHS_MASTER_PROMPT.md` for the source plan and `ROADMAP.md` / `BACKLOG.md` for phased execution.
+See `VECTORGLYPHS_MASTER_PROMPT.md` for the original source plan, `docs/vectorizer-app-pivot.md` for the pivot, and `ROADMAP.md` / `BACKLOG.md` for phased execution.

@@ -90,6 +90,27 @@ Completed:
 - Add `/glyph-lab` numbered feedback board for iterative visual curation.
 - Update web tests to enforce premium/retention content and product-context sections.
 
+## Phase 4.6 — Vectorizer.app pivot engine
+
+Status: started.
+
+Goal: build the internal tool that turns user-supplied monochrome icon-sheet images into individual, high-fidelity SVG glyphs for curated VectorGlyphs packs and the future `vectorizer.app` product.
+
+Completed:
+
+- Add `packages/vectorizer-core/python`.
+- Add monochrome normalization for black-on-light and white-on-dark sources.
+- Add connected-component/morphology-based sheet segmentation with numbered reading-order crops.
+- Add fidelity-first SVG path export with no raster embedding.
+- Add SVG render, similarity scoring, diff artifacts, manifest, and contact sheet output.
+- Run the first 152-glyph benchmark at perfect normalized-crop roundtrip scores.
+
+Next:
+
+- Add primitive/contour optimizer gated by visual-diff acceptance.
+- Add an interactive review UI for crop/render/diff/score inspection.
+- Add manual split/merge corrections and pack-building workflow.
+
 ## Phase 5 — Docker deployment
 
 Goal: production-ready deployment configuration, with deployment only after user approval.

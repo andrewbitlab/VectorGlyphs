@@ -24,6 +24,19 @@
 - [x] Add representative output tests.
 - [x] Generate sample gallery.
 
+## Vectorizer.app pivot
+
+- [x] Add first `packages/vectorizer-core/python` package.
+- [x] Add monochrome foreground extraction for light and dark source sheets.
+- [x] Add icon-sheet segmentation into numbered glyph crops.
+- [x] Add fidelity-first SVG export without embedded rasters/scripts/external resources.
+- [x] Add SVG-to-PNG roundtrip comparison, diffs, manifest, and contact sheet reports.
+- [x] Validate first 152-glyph benchmark with visually perfect normalized-crop roundtrip.
+- [ ] Add cleaner primitive/contour optimizer that only replaces fidelity paths when diff remains human-invisible.
+- [ ] Add interactive vectorizer review lab UI.
+- [ ] Add manual split/merge correction controls for difficult source sheets.
+- [ ] Add pack builder for curated VectorGlyphs products.
+
 ## Web
 
 - [x] Scaffold Next.js app.
