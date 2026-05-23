@@ -54,6 +54,7 @@ export function LandingPage() {
           </a>
           <div className="hidden items-center gap-6 text-sm text-[#d0d6e0] md:flex">
             <a href="#studio" className="hover:text-white">Studio</a>
+            <a href="/glyph-lab" className="hover:text-white">Glyph lab</a>
             <a href="#in-context" className="hover:text-white">In context</a>
             <a href="#exports" className="hover:text-white">Exports</a>
             <a href="#pricing" className="hover:text-white">Pricing</a>

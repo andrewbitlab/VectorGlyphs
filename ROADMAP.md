@@ -86,6 +86,8 @@ Completed:
 - Reframe the generator as a live premium glyph studio with stronger visual hierarchy and retention copy.
 - Add retention mechanics: variation loop, keeper-set framing, recently generated state, contextual preview nudges, and export confidence messaging.
 - Add product-context mockups for onboarding screens, dashboard cards, and brand system tiles.
+- Expand browser generator variety with segmented outer rings, filled line systems, and 50 distinct review-board structures.
+- Add `/glyph-lab` numbered feedback board for iterative visual curation.
 - Update web tests to enforce premium/retention content and product-context sections.
 
 ## Phase 5 — Docker deployment

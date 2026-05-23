@@ -17,6 +17,8 @@ Phase 4.5 upgrades the local web experience from a functional MVP into a premium
 - Client-side deterministic preview generator presented as a live premium glyph studio with controls for seed, style, complexity, stroke color, background, export format, and PNG size.
 - Retention layer: variation loop, keeper-set framing, recently generated state, product-context previews, and export-confidence messaging.
 - Glyph-in-context mockups for app onboarding, dashboard cards, and brand system tiles.
+- Expanded browser generator with 50 distinct review-board structures, segmented/broken outer rings, filled line systems, geometric cores, orbit dots, and organic variants.
+- `/glyph-lab` numbered 50-glyph feedback board for selecting weak designs by number before the next iteration.
 - Payment-safe messaging: redirects do not unlock paid files; webhook-confirmed exports and tokenized downloads are handled by the API.
 
 ## Local commands

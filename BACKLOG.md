@@ -38,6 +38,9 @@
 - [x] Add Phase 4.5 premium UX/retention redesign.
 - [x] Add glyph-in-context mockups for onboarding, dashboards, and brand tiles.
 - [x] Add retention copy for variation exploration, keeper sets, contextual preview, and confident export.
+- [x] Expand browser generator variety to 50 distinct review-board structures.
+- [x] Add segmented/broken outer ring and filled line-system glyph families.
+- [x] Add `/glyph-lab` numbered visual feedback board.
 
 ## API / exports
 

@@ -22,6 +22,8 @@ Phase 4.5 premium UX and retention redesign is complete on top of the local/test
 - success page explains that browser redirects do not unlock paid downloads
 - upgraded web experience frames VectorGlyphs as a premium design tool, not a generic AI-art toy
 - retention-focused studio experience encourages users to generate variations, build keeper sets, preview glyphs in real UI contexts, and export with confidence
+- browser preview generator now includes a wider set of symmetric glyph structures, including segmented outer rings and filled line systems
+- `/glyph-lab` provides a 50-glyph numbered feedback board for fast visual iteration
 - tests cover payment safety, signature verification, token hashing, paid-only downloads, API generation/export, premium web UI, and glyph core
 
 No live Stripe keys, deployment, cron jobs, external publishing, paid resources, or account automation have been created. The payment flow rejects live Stripe secret keys and is intended for local/test-mode validation only.

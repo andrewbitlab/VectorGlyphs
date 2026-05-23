@@ -29,6 +29,25 @@ describe("glyph preview generation", () => {
     );
   });
 
+  it("can generate a numbered review board of 50 distinct glyph structures", () => {
+    const spec = buildPreviewSpec({ seed: "feedback-board", style: "premium-ui", complexity: "dense", count: 50 });
+
+    const glyphs = generatePreviewGlyphs(spec);
+
+    expect(glyphs).toHaveLength(50);
+    expect(new Set(glyphs.map((glyph) => glyph.template)).size).toBe(50);
+    expect(glyphs.map((glyph) => glyph.id).at(-1)).toBe("glyph_050");
+  });
+
+  it("includes broken outer rings and filled interior line systems without empty non-silence marks", () => {
+    const spec = buildPreviewSpec({ seed: "variety-board", style: "dashboard", complexity: "dense", count: 50 });
+    const glyphs = generatePreviewGlyphs(spec);
+
+    expect(glyphs.filter((glyph) => glyph.tags.includes("segmented-ring")).length).toBeGreaterThanOrEqual(8);
+    expect(glyphs.filter((glyph) => glyph.tags.includes("filled-lines")).length).toBeGreaterThanOrEqual(10);
+    expect(glyphs.filter((glyph) => glyph.template !== "silence-ring" && glyph.elements.length < 2)).toEqual([]);
+  });
+
   it("renders clean recolorable SVG without scripts or external hrefs", () => {
     const spec = buildPreviewSpec({ seed: "clean-svg", stroke: "#9d9788", background: "transparent" });
     const svg = renderPreviewSvg(generatePreviewGlyphs(spec)[0], spec);
@@ -55,6 +74,7 @@ describe("glyph preview generation", () => {
 
   it("validates count, colors, style, and png size", () => {
     expect(() => buildPreviewSpec({ count: 0 })).toThrow(/count/i);
+    expect(() => buildPreviewSpec({ count: 51 })).toThrow(/count/i);
     expect(() => buildPreviewSpec({ style: "unsupported" })).toThrow(/style/i);
     expect(() => buildPreviewSpec({ stroke: "gold" })).toThrow(/color/i);
     expect(() => buildPreviewSpec({ pngSize: 300 })).toThrow(/PNG size/i);
