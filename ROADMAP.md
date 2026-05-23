@@ -46,15 +46,18 @@ Completed:
 
 ## Phase 3 — Export backend
 
+Status: complete.
+
 Goal: local API support for preview/export generation.
 
-Tasks:
+Completed:
 
 - Scaffold FastAPI app.
 - Expose health, generation, preview/export endpoints.
 - Implement SVG, PNG, and ZIP export paths.
 - Add local filesystem storage layout.
 - Add integration tests.
+- Keep backend local-only; no Stripe/payment/deployment work.
 
 ## Phase 4 — Stripe payment
 

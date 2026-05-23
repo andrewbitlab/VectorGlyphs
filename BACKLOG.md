@@ -38,15 +38,15 @@
 
 ## API / exports
 
-- [ ] Scaffold FastAPI app.
-- [ ] Add health endpoint.
-- [ ] Add generation endpoint.
-- [ ] Add preview endpoint.
-- [ ] Add export endpoint.
-- [ ] Implement PNG export.
-- [ ] Implement ZIP export.
-- [ ] Add local storage layout.
-- [ ] Add integration tests.
+- [x] Scaffold FastAPI app.
+- [x] Add health endpoint.
+- [x] Add generation endpoint.
+- [x] Add preview endpoint.
+- [x] Add export endpoint.
+- [x] Implement PNG export.
+- [x] Implement ZIP export.
+- [x] Add local storage layout.
+- [x] Add integration tests.
 
 ## Payments
 

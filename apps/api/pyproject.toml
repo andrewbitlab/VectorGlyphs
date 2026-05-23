@@ -1,0 +1,20 @@
+[project]
+name = "vectorglyphs-api"
+version = "0.1.0"
+description = "FastAPI export backend for VectorGlyphs."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "pydantic>=2.10",
+  "uvicorn>=0.32",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28",
+  "pytest>=9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+pythonpath = [".", "../../packages/glyph-core/python"]
