@@ -1,13 +1,15 @@
 export const HERO_COPY = {
   title: "Vector Glyph Generator",
   description:
-    "Create unique circular SVG and PNG glyphs for apps, websites, logos, dashboards and digital products. Preview for free. Download production-ready files for $1.",
-  microcopy: "No signup required. Commercial license included. SVG and transparent PNG exports.",
+    "Create unique circular SVG and PNG glyphs for apps, websites, logos, dashboards and digital products. Generate a premium icon language in seconds, then see it live inside real product surfaces.",
+  microcopy: "No signup required. Commercial license included. Payment-confirmed SVG, PNG and ZIP exports.",
 };
 
 export const LANDING_SECTIONS = [
   { id: "hero-generator", label: "Hero + live generator" },
   { id: "examples", label: "Generated glyph examples" },
+  { id: "studio", label: "Premium retention studio" },
+  { id: "in-context", label: "Glyphs in product context" },
   { id: "use-cases", label: "Use cases in modern UI" },
   { id: "exports", label: "SVG/PNG export explanation" },
   { id: "license", label: "Commercial license" },
@@ -30,6 +32,40 @@ export const USE_CASES = [
   "AI / quant / crypto dashboards",
 ] as const;
 
+export const RETENTION_FEATURES = [
+  {
+    title: "Explore variations",
+    body: "One click keeps the creative loop moving: fresh sets, retained style direction, and enough contrast to make comparison addictive.",
+  },
+  {
+    title: "Build a keeper set",
+    body: "The interface frames generated marks as a curated product asset system instead of one-off clipart, nudging users to assemble a reusable set.",
+  },
+  {
+    title: "Preview in context",
+    body: "Glyphs appear inside onboarding cards, dashboard modules, and brand tiles so users instantly imagine where they would use them.",
+  },
+  {
+    title: "Export with confidence",
+    body: "The purchase path reinforces clean SVG, transparent PNG, ZIP bundles, licensing clarity, and webhook-confirmed fulfillment.",
+  },
+] as const;
+
+export const IN_CONTEXT_SHOWCASES = [
+  {
+    title: "App onboarding",
+    body: "Use glyph marks as calm, premium illustrations for onboarding steps, empty states, and feature education screens.",
+  },
+  {
+    title: "Dashboard cards",
+    body: "Use glyph accents to separate metrics, alerts, automations, and data views without relying on generic icon packs.",
+  },
+  {
+    title: "Brand system tiles",
+    body: "Turn a glyph set into a consistent visual language for landing pages, pitch decks, changelogs, and internal tools.",
+  },
+] as const;
+
 export const FAQ_ITEMS = [
   {
     question: "What is a vector glyph generator?",
@@ -37,15 +73,15 @@ export const FAQ_ITEMS = [
   },
   {
     question: "Can I download glyphs as SVG?",
-    answer: "Yes. SVG export is part of the paid MVP path; Phase 2 previews the flow without payment.",
+    answer: "Yes. The export backend can package clean SVG files after a payment-confirmed checkout flow.",
   },
   {
     question: "Can I export transparent PNG files?",
-    answer: "Yes. The planned export backend supports transparent PNG files at production resolutions.",
+    answer: "Yes. The export backend supports transparent PNG files at 512, 1024, 2048 and 4096 pixels.",
   },
   {
     question: "Can I use generated glyphs commercially?",
-    answer: "Purchased glyphs will include commercial use for apps, websites, presentations, UI kits and digital products.",
+    answer: "Purchased glyphs include commercial use for apps, websites, presentations, UI kits and digital products.",
   },
   {
     question: "Can I use glyphs in logos?",
@@ -61,15 +97,15 @@ export const FAQ_ITEMS = [
   },
   {
     question: "How much does a download cost?",
-    answer: "The planned starting price is $1 for a single glyph export, with export packs tested later.",
+    answer: "The planned starting price is $1 for a production export pack, with pricing experiments planned later.",
   },
   {
     question: "What resolutions are available?",
-    answer: "The planned PNG sizes are 512, 1024, 2048 and 4096 pixels.",
+    answer: "PNG sizes are 512, 1024, 2048 and 4096 pixels.",
   },
   {
     question: "Can I request new styles?",
-    answer: "Yes. The Phase 2 feedback form captures requested styles and use cases before Telegram forwarding is configured.",
+    answer: "Yes. The feedback form captures requested styles and use cases before Telegram forwarding is configured.",
   },
 ] as const;
 

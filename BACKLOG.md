@@ -35,6 +35,9 @@
 - [x] Build feedback form.
 - [x] Add SEO metadata.
 - [x] Add web tests, lint config, and production build verification.
+- [x] Add Phase 4.5 premium UX/retention redesign.
+- [x] Add glyph-in-context mockups for onboarding, dashboards, and brand tiles.
+- [x] Add retention copy for variation exploration, keeper sets, contextual preview, and confident export.
 
 ## API / exports
 

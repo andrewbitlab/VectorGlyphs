@@ -17,13 +17,26 @@ describe("LandingPage", () => {
     expect(screen.getByLabelText(/PNG size/i)).toBeInTheDocument();
   });
 
-  it("renders no-payment MVP sections, FAQ, and feedback stub", () => {
+  it("renders payment-safe MVP sections, FAQ, and feedback stub", () => {
     render(<LandingPage />);
 
     expect(screen.getAllByText(/Preview for free/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/Stripe checkout will be enabled in Phase 4/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/payment-confirmed/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole("heading", { level: 2, name: /Commercial license/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: /Frequently asked questions/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/feedback message/i)).toBeInTheDocument();
+  });
+
+  it("renders the Phase 4.5 premium retention layer with product-context previews", () => {
+    render(<LandingPage />);
+
+    expect(screen.getAllByText(/Premium UX & Retention Layer/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole("heading", { level: 2, name: /Turn glyphs into interface moments/i })).toBeInTheDocument();
+    expect(screen.getByText(/Explore variations/i)).toBeInTheDocument();
+    expect(screen.getByText(/Build a keeper set/i)).toBeInTheDocument();
+    expect(screen.getByText(/Preview in context/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: /See the same glyph language across product surfaces/i })).toBeInTheDocument();
+    expect(screen.getByText(/App onboarding/i)).toBeInTheDocument();
+    expect(screen.getByText(/Brand system tiles/i)).toBeInTheDocument();
   });
 });

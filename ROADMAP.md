@@ -74,6 +74,20 @@ Completed:
 - Add hashed, expiring tokenized download flow and success page.
 - Test in local Stripe test-mode/signed-webhook simulation only; no live payments or deployment.
 
+## Phase 4.5 — Premium UX & retention layer
+
+Status: complete.
+
+Goal: turn the technical MVP into a premium, exploratory product experience that makes users want to generate, compare, and use glyphs inside real interfaces.
+
+Completed:
+
+- Upgrade the landing page from functional MVP to dark, megapremium design-tool presentation.
+- Reframe the generator as a live premium glyph studio with stronger visual hierarchy and retention copy.
+- Add retention mechanics: variation loop, keeper-set framing, recently generated state, contextual preview nudges, and export confidence messaging.
+- Add product-context mockups for onboarding screens, dashboard cards, and brand system tiles.
+- Update web tests to enforce premium/retention content and product-context sections.
+
 ## Phase 5 — Docker deployment
 
 Goal: production-ready deployment configuration, with deployment only after user approval.

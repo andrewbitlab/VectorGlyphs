@@ -1,6 +1,6 @@
-# VectorGlyphs Web MVP
+# VectorGlyphs Web
 
-Phase 2 implements the local web MVP without payment, deployment, cron jobs, or external service integrations.
+Phase 4.5 upgrades the local web experience from a functional MVP into a premium, retention-oriented product surface. It still does not deploy, create cron jobs, or use external marketing automation.
 
 ## Stack
 
@@ -13,9 +13,11 @@ Phase 2 implements the local web MVP without payment, deployment, cron jobs, or 
 ## Implemented
 
 - SEO metadata for the Vector Glyph Generator positioning.
-- Premium dark landing page with hero, examples, use cases, export explanation, license copy, pricing hypothesis, FAQ, and feedback stub.
-- Client-side deterministic preview generator with controls for seed, style, complexity, stroke color, background, export format, and PNG size.
-- Clear Phase 2 no-payment messaging: Stripe checkout is deferred to Phase 4.
+- Megapremium dark landing page with hero, examples, use cases, export explanation, license copy, pricing hypothesis, FAQ, and feedback stub.
+- Client-side deterministic preview generator presented as a live premium glyph studio with controls for seed, style, complexity, stroke color, background, export format, and PNG size.
+- Retention layer: variation loop, keeper-set framing, recently generated state, product-context previews, and export-confidence messaging.
+- Glyph-in-context mockups for app onboarding, dashboard cards, and brand system tiles.
+- Payment-safe messaging: redirects do not unlock paid files; webhook-confirmed exports and tokenized downloads are handled by the API.
 
 ## Local commands
 
@@ -27,4 +29,4 @@ npm run build
 npm run start -- --hostname 127.0.0.1 --port 3000
 ```
 
-The preview generator in this phase is browser-local. Phase 3 will replace/augment it with the FastAPI export backend and the Python `glyph_core` package.
+The preview generator remains browser-local for instant exploration. The FastAPI backend and Python `glyph_core` package provide server-side generation/export/payment-confirmed download paths.
