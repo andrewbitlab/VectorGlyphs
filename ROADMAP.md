@@ -61,16 +61,18 @@ Completed:
 
 ## Phase 4 — Stripe payment
 
+Status: complete in local/test-mode-safe form.
+
 Goal: payment-confirmed downloads.
 
-Tasks:
+Completed:
 
-- Add Postgres order/session schema.
-- Add server-side Stripe Checkout creation.
+- Add production-equivalent Postgres order/session DDL plus local SQLite-backed test-mode repository.
+- Add server-side checkout-session creation that creates pending orders and refuses live Stripe keys.
 - Add verified webhook handling and idempotency.
-- Generate paid exports only after webhook confirmation.
-- Add tokenized download flow and success page.
-- Test in Stripe test mode only.
+- Generate paid exports only after verified webhook confirmation.
+- Add hashed, expiring tokenized download flow and success page.
+- Test in local Stripe test-mode/signed-webhook simulation only; no live payments or deployment.
 
 ## Phase 5 — Docker deployment
 

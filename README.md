@@ -10,17 +10,19 @@ VectorGlyphs is an independent web product for generating premium circular vecto
 
 ## Current phase
 
-Phase 3 local export backend is complete:
+Phase 4 payment-confirmed downloads are implemented in a local/test-mode-safe form:
 
 - Phase 1 standalone `glyph_core` Python package remains available under `packages/glyph-core/python`
 - Next.js + TypeScript + Tailwind app lives under `apps/web`
 - FastAPI export backend lives under `apps/api`
 - API endpoints for health, deterministic generation previews, and local SVG/PNG/ZIP export bundles
 - local filesystem export storage under ignored runtime storage
-- integration tests for health, validation, generation, PNG export, ZIP contents, and export metadata
-- Phase 2 web MVP remains payment-free and locally verified
+- payment order schema, pending orders, checkout-session creation, verified webhook handling, webhook idempotency, and tokenized downloads
+- paid exports are generated only after a verified `checkout.session.completed` webhook reports `payment_status=paid`
+- success page explains that browser redirects do not unlock paid downloads
+- tests cover payment safety, signature verification, token hashing, paid-only downloads, API generation/export, web UI, and glyph core
 
-No payment integration, Stripe, deployment, cron jobs, external publishing, paid resources, or account automation have been created yet.
+No live Stripe keys, deployment, cron jobs, external publishing, paid resources, or account automation have been created. The payment flow rejects live Stripe secret keys and is intended for local/test-mode validation only.
 
 ## Planned stack
 

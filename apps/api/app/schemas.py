@@ -35,6 +35,10 @@ class ExportRequest(GenerateRequest):
     png_size: PngSize = Field(default=2048, alias="pngSize")
 
 
+class CheckoutRequest(ExportRequest):
+    customer_email: str | None = Field(default=None, alias="customerEmail")
+
+
 class GlyphPreview(BaseModel):
     id: str
     name: str
@@ -56,3 +60,10 @@ class ExportResponse(BaseModel):
     manifest_file: str = Field(alias="manifestFile")
     storage_path: str = Field(alias="storagePath")
     expires_in_seconds: int = Field(alias="expiresInSeconds")
+
+
+class CheckoutResponse(BaseModel):
+    order_id: str = Field(alias="orderId")
+    status: Literal["pending"] = "pending"
+    checkout_session_id: str = Field(alias="checkoutSessionId")
+    checkout_url: str = Field(alias="checkoutUrl")

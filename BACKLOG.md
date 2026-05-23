@@ -50,13 +50,13 @@
 
 ## Payments
 
-- [ ] Add Postgres schema for orders.
-- [ ] Add Stripe Checkout session creation.
-- [ ] Add Stripe webhook signature verification.
-- [ ] Add Stripe event idempotency.
-- [ ] Add tokenized download.
-- [ ] Add success page.
-- [ ] Test in Stripe test mode.
+- [x] Add Postgres schema for orders.
+- [x] Add Stripe Checkout session creation.
+- [x] Add Stripe webhook signature verification.
+- [x] Add Stripe event idempotency.
+- [x] Add tokenized download.
+- [x] Add success page.
+- [x] Test in Stripe test mode.
 
 ## Deployment
 
