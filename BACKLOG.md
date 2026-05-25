@@ -32,7 +32,12 @@
 - [x] Add fidelity-first SVG export without embedded rasters/scripts/external resources.
 - [x] Add SVG-to-PNG roundtrip comparison, diffs, manifest, and contact sheet reports.
 - [x] Validate first 152-glyph benchmark with visually perfect normalized-crop roundtrip.
-- [ ] Add cleaner primitive/contour optimizer that only replaces fidelity paths when diff remains human-invisible.
+- [x] Add quality-gated `potrace`/`vtracer` tracing with exact fallback.
+- [x] Add batch export into one pack directory per source image.
+- [x] Add final product PNG export at 500×500 per glyph.
+- [x] Validate current local batch: 33 readable packs, 3,745 PNGs, no missing artifacts, no bad PNG sizes.
+- [ ] Add automated curation filters for text fragments, watermarks, clipped symbols, and low-value noisy detections.
+- [ ] Add cleaner primitive optimizer that only replaces fidelity paths when diff remains human-invisible.
 - [ ] Add interactive vectorizer review lab UI.
 - [ ] Add manual split/merge correction controls for difficult source sheets.
 - [ ] Add pack builder for curated VectorGlyphs products.

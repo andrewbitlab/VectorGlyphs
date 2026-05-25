@@ -1,13 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import io
 import math
+import os
 import re
+import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 from typing import Iterable
 
 import numpy as np
 from PIL import Image, ImageChops
+from scipy import ndimage as ndi
 from skimage import measure, morphology
 from skimage.filters import threshold_otsu, threshold_local
 from skimage.metrics import structural_similarity
@@ -47,6 +53,21 @@ class GlyphCrop:
     image: Image.Image
     mask: np.ndarray
     foreground_pixels: int
+
+
+@dataclass(frozen=True)
+class VectorizationResult:
+    svg: str
+    backend: str
+    score: SimilarityScore
+    accepted: bool
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "backend": self.backend,
+            "accepted": self.accepted,
+            "score": self.score.to_dict(),
+        }
 
 
 @dataclass(frozen=True)
@@ -160,7 +181,11 @@ def _choose_grouping(mask: np.ndarray, config: SegmenterConfig) -> list[tuple[Bo
     best_score = -10**9
 
     for radius in radii:
-        grouped = mask if radius == 0 else morphology.dilation(mask, morphology.disk(radius))
+        # Rectangular max-filter dilation is intentionally used here instead of
+        # skimage's disk dilation: for multi-megapixel uploaded sheets it is two
+        # orders of magnitude faster, and grouping is only a coarse step before
+        # every box is tightened back to the original ink mask.
+        grouped = mask if radius == 0 else ndi.maximum_filter(mask, size=(radius * 2 + 1, radius * 2 + 1))
         labels = measure.label(grouped, connectivity=2)
         boxes = _component_boxes(labels, mask, min_area)
         if not boxes:
@@ -312,6 +337,123 @@ def vectorize_mask_to_svg(mask: np.ndarray, config: VectorizerConfig | None = No
     )
 
 
+def _write_mask_as_pbm(mask: np.ndarray, path: Path) -> None:
+    image = Image.fromarray(np.where(mask, 0, 255).astype(np.uint8), "L").convert("1")
+    image.save(path)
+
+
+def _sanitize_external_svg(svg: str, backend: str) -> str:
+    svg = re.sub(r"<\?xml[^>]*>\s*", "", svg, flags=re.IGNORECASE)
+    svg = re.sub(r"<!DOCTYPE[\s\S]*?>\s*", "", svg, flags=re.IGNORECASE)
+    svg = re.sub(r"<metadata[\s\S]*?</metadata>\s*", "", svg, flags=re.IGNORECASE)
+    svg = re.sub(r"<!--.*?-->\s*", "", svg, flags=re.DOTALL)
+    svg = svg.replace("http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd", "")
+    svg = re.sub(r"<svg\b", f'<svg data-trace-mode="{backend}"', svg, count=1)
+    return svg.strip() + "\n"
+
+
+def _trace_mask_with_potrace(mask: np.ndarray, config: VectorizerConfig) -> str | None:
+    if shutil.which("potrace") is None:
+        return None
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        pbm_path = tmp_path / "glyph.pbm"
+        svg_path = tmp_path / "glyph.svg"
+        _write_mask_as_pbm(mask.astype(bool), pbm_path)
+        command = [
+            "potrace",
+            "-s",
+            "--flat",
+            "--turdsize",
+            "1",
+            "--opttolerance",
+            "0.2",
+            "--alphamax",
+            "1.0",
+            "--color",
+            _safe_hex(config.stroke_color),
+            "-o",
+            str(svg_path),
+            str(pbm_path),
+        ]
+        subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return _sanitize_external_svg(svg_path.read_text(encoding="utf-8"), "potrace")
+
+
+def _trace_mask_with_vtracer(mask: np.ndarray, config: VectorizerConfig) -> str | None:
+    try:
+        import vtracer  # type: ignore[import-not-found]
+    except Exception:
+        return None
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        input_path = tmp_path / "glyph.png"
+        output_path = tmp_path / "glyph.svg"
+        Image.fromarray(np.where(mask, 0, 255).astype(np.uint8), "L").convert("RGB").save(input_path)
+        vtracer.convert_image_to_svg_py(
+            str(input_path),
+            str(output_path),
+            colormode="binary",
+            hierarchical="stacked",
+            mode="spline",
+            filter_speckle=1,
+            color_precision=6,
+            layer_difference=16,
+            corner_threshold=60,
+            length_threshold=3.5,
+            max_iterations=10,
+            splice_threshold=45,
+            path_precision=max(1, config.precision),
+        )
+        return _sanitize_external_svg(output_path.read_text(encoding="utf-8"), "vtracer")
+
+
+def trace_mask_to_svg_best_effort(
+    mask: np.ndarray,
+    config: VectorizerConfig | None = None,
+    *,
+    preferred_backend: str = "auto",
+    min_ssim: float = 0.985,
+    min_iou: float = 0.97,
+) -> VectorizationResult:
+    config = config or VectorizerConfig()
+    reference = mask_to_reference_image(mask)
+    candidates: list[tuple[str, str]] = []
+
+    backend_order = ["potrace", "vtracer"] if preferred_backend == "auto" else [preferred_backend]
+    for backend in backend_order:
+        svg: str | None = None
+        if backend == "potrace":
+            svg = _trace_mask_with_potrace(mask, config)
+        elif backend == "vtracer":
+            svg = _trace_mask_with_vtracer(mask, config)
+        elif backend == "contour":
+            svg = vectorize_mask_to_svg(mask, VectorizerConfig(stroke_color=config.stroke_color, simplify_tolerance=config.simplify_tolerance, precision=config.precision, trace_mode="contour"))
+        if svg:
+            candidates.append((backend, svg))
+
+    lossless_svg = vectorize_mask_to_svg(mask, VectorizerConfig(stroke_color=config.stroke_color, simplify_tolerance=0, precision=config.precision, trace_mode="lossless-runs"))
+    candidates.append(("lossless-runs", lossless_svg))
+
+    best: VectorizationResult | None = None
+    for backend, svg in candidates:
+        try:
+            rendered = render_svg_to_png(svg, mask.shape[1], mask.shape[0])
+            score = compare_images(reference, rendered)
+        except Exception:
+            continue
+        accepted = score.ssim >= min_ssim and score.foreground_iou >= min_iou
+        result = VectorizationResult(svg=svg, backend=backend, score=score, accepted=accepted)
+        if accepted:
+            return result
+        if best is None or (score.ssim, score.foreground_iou) > (best.score.ssim, best.score.foreground_iou):
+            best = result
+    if best is not None:
+        return best
+    rendered = render_svg_to_png(lossless_svg, mask.shape[1], mask.shape[0])
+    return VectorizationResult(svg=lossless_svg, backend="lossless-runs", score=compare_images(reference, rendered), accepted=True)
+
+
 def _parse_own_path_polygons(svg: str) -> list[list[tuple[float, float]]]:
     match = re.search(r'<path[^>]*\sd="([^"]*)"', svg)
     if not match:
@@ -344,24 +486,51 @@ def _parse_own_path_polygons(svg: str) -> list[list[tuple[float, float]]]:
     return polygons
 
 
-def render_svg_to_png(svg: str, width: int, height: int) -> Image.Image:
-    """Rasterize the SVG subset emitted by vectorize_mask_to_svg.
+def _ensure_cairo_runtime() -> None:
+    homebrew_lib = "/opt/homebrew/lib"
+    existing = os.environ.get("DYLD_FALLBACK_LIBRARY_PATH", "")
+    if homebrew_lib not in existing.split(":"):
+        os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = f"{homebrew_lib}:{existing}" if existing else homebrew_lib
 
-    The production vectorizer can later swap this for resvg/librsvg in the app,
-    but tests and local benchmark reports must not depend on system Cairo.
-    """
+
+def _render_svg_with_cairosvg(svg: str, width: int, height: int, *, background_color: str | None) -> Image.Image:
+    _ensure_cairo_runtime()
+    import cairosvg  # type: ignore[import-not-found]
+
+    kwargs: dict[str, object] = {
+        "bytestring": svg.encode("utf-8"),
+        "output_width": width,
+        "output_height": height,
+    }
+    if background_color is not None:
+        kwargs["background_color"] = background_color
+    png_bytes = cairosvg.svg2png(**kwargs)
+    return Image.open(io.BytesIO(png_bytes)).convert("RGBA")
+
+
+def _render_lossless_runs_to_luma(svg: str, width: int, height: int) -> Image.Image:
+    bitmap = np.zeros((height, width), dtype=bool)
+    match = re.search(r'<path[^>]*\sd="([^"]*)"', svg)
+    if match:
+        # Our lossless path format is a list of one-pixel-high rectangles:
+        # M x0 y L x1 y L x1 y+1 L x0 y+1 Z
+        pattern = re.compile(r"M (\d+) (\d+) L (\d+) \2 L \3 (\d+) L \1 \4 Z")
+        for run in pattern.finditer(match.group(1)):
+            x0, y, x1, y_next = map(int, run.groups())
+            if y_next == y + 1 and 0 <= y < height:
+                bitmap[y, max(0, x0):min(width, x1)] = True
+    return Image.fromarray(np.where(bitmap, 0, 255).astype(np.uint8), "L")
+
+
+def render_svg_to_png(svg: str, width: int, height: int) -> Image.Image:
+    """Rasterize SVG to a white-background grayscale PNG for quality scoring."""
     if 'data-trace-mode="lossless-runs"' in svg:
-        bitmap = np.zeros((height, width), dtype=bool)
-        match = re.search(r'<path[^>]*\sd="([^"]*)"', svg)
-        if match:
-            # Our lossless path format is a list of one-pixel-high rectangles:
-            # M x0 y L x1 y L x1 y+1 L x0 y+1 Z
-            pattern = re.compile(r"M (\d+) (\d+) L (\d+) \2 L \3 (\d+) L \1 \4 Z")
-            for run in pattern.finditer(match.group(1)):
-                x0, y, x1, y_next = map(int, run.groups())
-                if y_next == y + 1 and 0 <= y < height:
-                    bitmap[y, max(0, x0):min(width, x1)] = True
-        return Image.fromarray(np.where(bitmap, 0, 255).astype(np.uint8), "L")
+        return _render_lossless_runs_to_luma(svg, width, height)
+    try:
+        rendered = _render_svg_with_cairosvg(svg, width, height, background_color="white")
+        return rendered.convert("L")
+    except Exception:
+        pass
 
     scale = 1
     mask = Image.new("1", (width * scale, height * scale), 0)
@@ -376,6 +545,43 @@ def render_svg_to_png(svg: str, width: int, height: int) -> Image.Image:
         mask = ImageChops.logical_xor(mask, poly_mask)
     gray = mask.convert("L").resize((width, height), Image.Resampling.NEAREST)
     return Image.eval(gray, lambda value: 0 if value > 0 else 255)
+
+
+def _svg_declared_size(svg: str) -> tuple[int, int]:
+    viewbox = re.search(r'viewBox="\s*[-0-9.]+\s+[-0-9.]+\s+([0-9.]+)\s+([0-9.]+)\s*"', svg)
+    if viewbox:
+        return max(1, int(float(viewbox.group(1)))), max(1, int(float(viewbox.group(2))))
+    width = re.search(r'\swidth="([0-9.]+)', svg)
+    height = re.search(r'\sheight="([0-9.]+)', svg)
+    if width and height:
+        return max(1, int(float(width.group(1)))), max(1, int(float(height.group(1))))
+    return 500, 500
+
+
+def render_svg_to_product_png(svg: str, *, size: int = 500, source_width: int | None = None, source_height: int | None = None) -> Image.Image:
+    """Render a transparent, square product PNG from an SVG without distorting aspect ratio."""
+    source_width, source_height = (source_width, source_height) if source_width and source_height else _svg_declared_size(svg)
+    try:
+        if 'data-trace-mode="lossless-runs"' in svg:
+            luma = _render_lossless_runs_to_luma(svg, int(source_width), int(source_height))
+            alpha = Image.eval(luma, lambda value: 255 - value)
+            rendered = Image.new("RGBA", luma.size, (0, 0, 0, 255))
+            rendered.putalpha(alpha)
+        else:
+            rendered = _render_svg_with_cairosvg(svg, int(source_width), int(source_height), background_color=None)
+    except Exception:
+        luma = render_svg_to_png(svg, int(source_width), int(source_height))
+        alpha = Image.eval(luma, lambda value: 255 - value)
+        rendered = Image.new("RGBA", luma.size, (0, 0, 0, 0))
+        rendered.putalpha(alpha)
+    if rendered.getbbox() is None:
+        return Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    scale = min(size / rendered.width, size / rendered.height)
+    target = (max(1, round(rendered.width * scale)), max(1, round(rendered.height * scale)))
+    rendered = rendered.resize(target, Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    canvas.alpha_composite(rendered, ((size - rendered.width) // 2, (size - rendered.height) // 2))
+    return canvas
 
 
 def _binary_foreground(image: Image.Image) -> np.ndarray:

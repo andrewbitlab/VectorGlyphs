@@ -24,7 +24,7 @@ Phase 4.5 premium UX and retention redesign is complete on top of the local/test
 - retention-focused studio experience encourages users to generate variations, build keeper sets, preview glyphs in real UI contexts, and export with confidence
 - browser preview generator now includes a wider set of symmetric glyph structures, including segmented outer rings and filled line systems
 - `/glyph-lab` provides a 50-glyph numbered feedback board for fast visual iteration
-- pivot work has started under `packages/vectorizer-core/python`: monochrome icon-sheet segmentation, SVG vectorization, rendered-PNG comparison, diff artifacts, and benchmark contact sheets
+- `packages/vectorizer-core/python` now performs monochrome icon-sheet segmentation, quality-gated `potrace`/`vtracer`/fallback SVG vectorization, rendered-PNG comparison, diff artifacts, per-pack manifests, contact sheets, and final PNG export at 500×500
 - tests cover payment safety, signature verification, token hashing, paid-only downloads, API generation/export, premium web UI, vectorizer core, and glyph core
 
 No live Stripe keys, deployment, cron jobs, external publishing, paid resources, or account automation have been created. The payment flow rejects live Stripe secret keys and is intended for local/test-mode validation only.

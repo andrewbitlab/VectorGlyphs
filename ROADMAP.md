@@ -92,7 +92,7 @@ Completed:
 
 ## Phase 4.6 — Vectorizer.app pivot engine
 
-Status: started.
+Status: engine batch-export milestone complete; curation/review still pending.
 
 Goal: build the internal tool that turns user-supplied monochrome icon-sheet images into individual, high-fidelity SVG glyphs for curated VectorGlyphs packs and the future `vectorizer.app` product.
 
@@ -104,10 +104,16 @@ Completed:
 - Add fidelity-first SVG path export with no raster embedding.
 - Add SVG render, similarity scoring, diff artifacts, manifest, and contact sheet output.
 - Run the first 152-glyph benchmark at perfect normalized-crop roundtrip scores.
+- Add quality-gated `potrace`/`vtracer` SVG tracing with exact fallback.
+- Add batch processing for a directory of source sheets into one pack directory per image.
+- Add final product PNG export at 500×500 per glyph.
+- Validate the current local source batch: 33 readable packs, 3,745 glyphs, no missing artifacts, no incorrect PNG sizes, mean SSIM ~0.999856.
+- Fail unreadable/corrupt source images into per-pack `FAILED.txt` without blocking the rest of the batch.
 
 Next:
 
-- Add primitive/contour optimizer gated by visual-diff acceptance.
+- Add curation filters for text fragments, watermarks, clipped symbols, and low-value noisy detections.
+- Add primitive optimizer gated by visual-diff acceptance.
 - Add an interactive review UI for crop/render/diff/score inspection.
 - Add manual split/merge corrections and pack-building workflow.
 

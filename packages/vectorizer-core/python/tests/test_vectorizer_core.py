@@ -11,11 +11,13 @@ from vectorizer_core import (
     VectorizerConfig,
     compare_images,
     create_monochrome_mask,
+    render_svg_to_product_png,
     render_svg_to_png,
     segment_glyph_sheet,
+    trace_mask_to_svg_best_effort,
     vectorize_mask_to_svg,
 )
-from vectorizer_core.cli import run_vectorizer
+from vectorizer_core.cli import run_vectorizer, run_vectorizer_batch
 
 
 def _synthetic_sheet() -> Image.Image:
@@ -88,6 +90,36 @@ def test_vectorized_svg_renders_visually_identical_to_monochrome_crop() -> None:
     assert score.foreground_iou >= 0.97
 
 
+def test_best_effort_vectorizer_uses_potrace_when_quality_gate_passes() -> None:
+    sheet = _synthetic_sheet()
+    mask = create_monochrome_mask(sheet)
+    glyph = segment_glyph_sheet(sheet, mask, SegmenterConfig(min_area_ratio=0.0008, max_glyphs=12))[0]
+
+    result = trace_mask_to_svg_best_effort(glyph.mask, preferred_backend="potrace", min_ssim=0.75, min_iou=0.75)
+    rendered = render_svg_to_png(result.svg, glyph.mask.shape[1], glyph.mask.shape[0])
+    reference = Image.fromarray((~glyph.mask * 255).astype("uint8"), "L")
+    score = compare_images(reference, rendered)
+
+    assert result.backend in {"potrace", "lossless-runs"}
+    assert "<image" not in result.svg.lower()
+    assert "<!doctype" not in result.svg.lower()
+    assert score.ssim >= 0.75
+
+
+def test_product_png_export_is_500_square_from_svg_vector() -> None:
+    sheet = _synthetic_sheet()
+    mask = create_monochrome_mask(sheet)
+    glyph = segment_glyph_sheet(sheet, mask, SegmenterConfig(min_area_ratio=0.0008, max_glyphs=12))[0]
+    result = trace_mask_to_svg_best_effort(glyph.mask, preferred_backend="auto")
+
+    png = render_svg_to_product_png(result.svg, size=500)
+
+    assert png.size == (500, 500)
+    assert png.mode == "RGBA"
+    alpha = np.asarray(png.getchannel("A"))
+    assert alpha.max() > 0
+
+
 def test_cli_generates_manifest_svgs_renders_diffs_and_contact_sheet(tmp_path: Path) -> None:
     input_path = tmp_path / "sheet.png"
     out_dir = tmp_path / "out"
@@ -102,5 +134,28 @@ def test_cli_generates_manifest_svgs_renders_diffs_and_contact_sheet(tmp_path: P
     for glyph in manifest["glyphs"]:
         assert Path(glyph["svg_path"]).exists()
         assert Path(glyph["render_path"]).exists()
+        assert Path(glyph["png_500_path"]).exists()
+        assert Image.open(glyph["png_500_path"]).size == (500, 500)
         assert Path(glyph["diff_path"]).exists()
+        assert glyph["backend"] in {"potrace", "vtracer", "lossless-runs", "contour"}
         assert glyph["score"]["ssim"] >= 0.985
+
+
+def test_batch_vectorizer_creates_one_output_folder_per_source_image(tmp_path: Path) -> None:
+    input_dir = tmp_path / "images"
+    input_dir.mkdir()
+    _synthetic_sheet().save(input_dir / "sheet one.png")
+    _synthetic_sheet().save(input_dir / "sheet-two.jpg")
+    _synthetic_sheet().save(input_dir / "collision-2.png")
+    _synthetic_sheet().save(input_dir / "collision.png")
+    _synthetic_sheet().save(input_dir / "collision@.png")
+
+    manifests = run_vectorizer_batch(input_dir=input_dir, output_dir=tmp_path / "packs", max_glyphs=12, png_size=500)
+
+    assert len(manifests) == 5
+    assert (tmp_path / "packs" / "sheet-one" / "png-500").exists()
+    assert (tmp_path / "packs" / "sheet-two" / "png-500").exists()
+    assert (tmp_path / "packs" / "collision" / "png-500").exists()
+    assert (tmp_path / "packs" / "collision-2" / "png-500").exists()
+    assert (tmp_path / "packs" / "collision-3" / "png-500").exists()
+    assert len({manifest.parent.name for manifest in manifests}) == len(manifests)
